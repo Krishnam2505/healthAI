@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import authRouter from './routes/auth.routes.js';
 
 // 1. Load environment variables
 dotenv.config();
@@ -12,6 +13,9 @@ const app = express();
 // 4. Add middleware
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRouter);
 
 // 5. Add a test route
 app.get('/', (req, res) => {
