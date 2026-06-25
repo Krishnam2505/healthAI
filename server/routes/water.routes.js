@@ -66,4 +66,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+// PUT /api/water/:id - Update a water log
+router.put('/:id', async (req, res) => {
+  try {
+    const { liters, date } = req.body;
+    
+    // Safety check just like the POST route!
+    if (liters !== undefined && liters <= 0) {
+      return res.status(400).json({ message: 'Liters must be greater than 0' });
+    }
+
+    const updateData = { liters };
+    if (date) updateData.date = new Date(date);
+
+    const updatedWater = await Water.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedWater) {
+      return res.status(404).json({ message: 'Water log not found' });
+    }
+    
+    return res.status(200).json(updatedWater);
+  } catch (error) {
+    console.error('Error updating water log:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 export default router;

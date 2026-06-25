@@ -86,4 +86,29 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// PUT /api/meals/:id - Update a meal
+router.put('/:id', async (req, res) => {
+  try {
+    const { name, calories, protein, carbs, fat, mealType, date } = req.body;
+    
+    const updateData = { name, calories, protein, carbs, fat, mealType };
+    if (date) updateData.date = new Date(date);
+
+    const updatedMeal = await Meal.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMeal) {
+      return res.status(404).json({ message: 'Meal not found' });
+    }
+    
+    return res.status(200).json(updatedMeal);
+  } catch (error) {
+    console.error('Error updating meal:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 export default router;

@@ -8,6 +8,7 @@ import mealRouter from './routes/meal.routes.js';
 import sleepRouter from './routes/sleep.routes.js';
 import waterRouter from './routes/water.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
+import aiRouter from './routes/ai.routes.js';
 
 // 1. Load environment variables
 dotenv.config();
@@ -26,6 +27,7 @@ app.use('/api/meals', mealRouter);
 app.use('/api/sleep', sleepRouter);
 app.use('/api/water', waterRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/ai', aiRouter);
 
 // 5. Add a test route
 app.get('/', (req, res) => {

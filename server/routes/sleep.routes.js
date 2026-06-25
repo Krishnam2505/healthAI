@@ -67,4 +67,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+// PUT /api/sleep/:id - Update a sleep log
+router.put('/:id', async (req, res) => {
+  try {
+    const { hours, quality, date } = req.body;
+    
+    // Safety check just like the POST route!
+    if (hours !== undefined && (hours < 0 || hours > 24)) {
+      return res.status(400).json({ message: 'Hours must be between 0 and 24' });
+    }
+
+    const updateData = { hours, quality };
+    if (date) updateData.date = new Date(date);
+
+    const updatedSleep = await Sleep.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSleep) {
+      return res.status(404).json({ message: 'Sleep log not found' });
+    }
+    
+    return res.status(200).json(updatedSleep);
+  } catch (error) {
+    console.error('Error updating sleep log:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 export default router;

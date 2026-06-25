@@ -88,4 +88,31 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// PUT /api/workouts/:id - Update a workout
+router.put('/:id', async (req, res) => {
+  try {
+    const { type, duration, caloriesBurned, notes, date } = req.body;
+    
+    // We create an update object. If the user didn't send a new date, we don't update the date.
+    const updateData = { type, duration, caloriesBurned, notes };
+    if (date) updateData.date = new Date(date);
+
+    // findOneAndUpdate updates the document in a single step
+    const updatedWorkout = await Workout.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId }, // Security: Must match ID and Owner
+      updateData, // The new data
+      { new: true, runValidators: true } // Return the NEW updated version, and run Schema rules
+    );
+
+    if (!updatedWorkout) {
+      return res.status(404).json({ message: 'Workout not found' });
+    }
+    
+    return res.status(200).json(updatedWorkout);
+  } catch (error) {
+    console.error('Error updating workout:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 export default router;
