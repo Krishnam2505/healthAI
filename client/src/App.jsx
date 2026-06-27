@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Log from './pages/Log';
 import Plan from './pages/Plan';
 import Chat from './pages/Chat';
+import Navbar from './components/Navbar';
 
 // The Security Bouncer Component
 // It checks if the user has a token. If they do, it lets them see the page (children).
@@ -20,7 +21,15 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
   
-  return children;
+  // If they are logged in, we render the Navbar at the very top, and then the actual page content below it!
+  return (
+    <>
+      <Navbar />
+      <main className="page-content">
+        {children}
+      </main>
+    </>
+  );
 }
 
 export default function App() {

@@ -1,1 +1,75 @@
-/* Empty file */
+:root {
+  /* A clean, minimalist Light Theme that feels human-made, like Notion or Apple Health */
+  --bg-primary: #fafafa;       /* very soft off-white for the main background */
+  --bg-card: #ffffff;          /* pure white for cards */
+  --bg-card-hover: #f4f4f5;    /* subtle grey on hover */
+  --border: #e4e4e7;           /* light, delicate borders */
+  
+  --text-primary: #18181b;     /* soft charcoal (not pure black) for readable text */
+  --text-secondary: #71717a;   /* warm grey for subtitles */
+  
+  --accent-green: #10b981;     /* a softer, organic emerald green */
+  --accent-blue: #3b82f6;      /* calm blue */
+  --accent-orange: #f97316;    /* warm orange */
+  --accent-red: #ef4444;       
+  --accent-amber: #f59e0b;     
+  
+  --radius: 16px;              /* softer, rounder corners feel more organic */
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); /* very soft, elegant shadow instead of harsh dark ones */
+}
+
+/* Base Reset: Strips away browser default margins and padding */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+/* Apply our new CSS Variables to the entire app body */
+body { 
+  background-color: var(--bg-primary); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+}
+
+/* --- Global Utility Classes --- */
+
+/* A beautiful, elevated card container */
+.card { 
+  background: var(--bg-card); 
+  border-radius: var(--radius); 
+  border: 1px solid var(--border); 
+  padding: 1.5rem; 
+  box-shadow: var(--shadow); 
+}
+
+/* A bright, eye-catching primary button */
+.btn-primary { 
+  background: var(--accent-green); 
+  color: #000; 
+  border: none; 
+  border-radius: 8px; 
+  padding: 0.6rem 1.2rem; 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover { 
+  opacity: 0.9; 
+}
+
+/* A subtle, outlined secondary button */
+.btn-secondary { 
+  background: transparent; 
+  color: var(--text-primary); 
+  border: 1px solid var(--border); 
+  border-radius: 8px; 
+  padding: 0.6rem 1.2rem; 
+  cursor: pointer; 
+  transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card-hover);
+}
