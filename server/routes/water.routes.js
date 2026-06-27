@@ -66,6 +66,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+// DELETE /api/water/:id - Delete a water log
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedWater = await Water.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!deletedWater) {
+      return res.status(404).json({ message: 'Water log not found' });
+    }
+
+    return res.status(200).json({ message: 'Water log deleted' });
+  } catch (error) {
+    console.error('Error deleting water log:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // PUT /api/water/:id - Update a water log
 router.put('/:id', async (req, res) => {
   try {

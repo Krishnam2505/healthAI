@@ -4,7 +4,7 @@ import axios from 'axios';
 // We set the base URL to '/api'. Thanks to our Vite Proxy from Chunk 6.1, 
 // any request to '/api' will automatically be forwarded to our backend!
 const api = axios.create({
-  baseURL: '/api'
+  baseURL: import.meta.env.VITE_API_URL || '/api'
 });
 
 // 2. Request Interceptor (The outbound security guard)

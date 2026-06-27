@@ -67,6 +67,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+// DELETE /api/sleep/:id - Delete a sleep log
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedSleep = await Sleep.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.userId
+    });
+
+    if (!deletedSleep) {
+      return res.status(404).json({ message: 'Sleep log not found' });
+    }
+
+    return res.status(200).json({ message: 'Sleep log deleted' });
+  } catch (error) {
+    console.error('Error deleting sleep log:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 // PUT /api/sleep/:id - Update a sleep log
 router.put('/:id', async (req, res) => {
   try {

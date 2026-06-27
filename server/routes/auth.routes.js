@@ -4,17 +4,34 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 
+function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+
 const router = express.Router();
 
 // POST /register
 router.post('/register', async (req, res) => {
   try {
-    // 1. Destructure { name, email, password, goal, dailyCalorieTarget } from req.body
-    const { name, email, password, goal, dailyCalorieTarget } = req.body;
+    // 1. Destructure { name, email, password, goal, gender, dailyCalorieTarget } from req.body
+    const { name, email, password, goal, gender, dailyCalorieTarget } = req.body;
 
     // 2. Validate: if name, email, or password are missing
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email and password are required' });
+    }
+    
+    // Server-Side Validation is critical because hackers can bypass frontend React validation 
+    // using tools like Postman to send bad data directly to our server.
+    if (name.length < 2) {
+      return res.status(400).json({ message: 'Name must be at least 2 characters' });
+    }
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+    if (dailyCalorieTarget && (dailyCalorieTarget < 500 || dailyCalorieTarget > 10000)) {
+      return res.status(400).json({ message: 'Calorie target must be between 500 and 10000' });
     }
 
     // 3. Check if a user with this email already exists in MongoDB
@@ -32,6 +49,7 @@ router.post('/register', async (req, res) => {
       email,
       password: hashedPassword,
       goal,
+      gender,
       dailyCalorieTarget
     });
     await newUser.save();
@@ -51,6 +69,7 @@ router.post('/register', async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         goal: newUser.goal,
+        gender: newUser.gender,
         dailyCalorieTarget: newUser.dailyCalorieTarget
       }
     });
@@ -103,6 +122,7 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         goal: user.goal,
+        gender: user.gender,
         dailyCalorieTarget: user.dailyCalorieTarget
       }
     });

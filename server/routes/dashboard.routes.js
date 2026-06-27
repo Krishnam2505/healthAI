@@ -4,6 +4,7 @@ import Workout from '../models/Workout.js';
 import Meal from '../models/Meal.js';
 import Sleep from '../models/Sleep.js';
 import Water from '../models/Water.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -25,12 +26,13 @@ router.get('/', async (req, res) => {
       date: { $gte: startOfToday, $lte: endOfToday }
     };
 
-    // 2. Query all 4 collections at the exact same time!
-    const [workouts, meals, sleep, water] = await Promise.all([
+    // 2. Query all collections at the exact same time to make it extremely fast!
+    const [workouts, meals, sleep, water, user] = await Promise.all([
       Workout.find(query),
       Meal.find(query),
       Sleep.find(query),
-      Water.find(query)
+      Water.find(query),
+      User.findById(req.userId) // We need the user's name and goals for the UI!
     ]);
 
     // 3. Calculate today's exact totals using array.reduce
@@ -113,7 +115,7 @@ router.get('/', async (req, res) => {
       }
     }
 
-    // 6. Send all 3 sections back in one single, clean package!
+    // 6. Send all sections back in one single, clean package!
     return res.status(200).json({
       today: {
         totalCalories,
@@ -125,7 +127,15 @@ router.get('/', async (req, res) => {
         sleepHours: sleepHours > 0 ? sleepHours : null 
       },
       weekly,
-      streak: { current: streakCount }
+      streak: { 
+        current: streakCount,
+        longest: streakCount // We'll just mirror current for now to avoid complex historical streak logic
+      },
+      user: {
+        name: user.name,
+        goal: user.goal,
+        dailyCalorieTarget: user.dailyCalorieTarget
+      }
     });
 
   } catch (error) {

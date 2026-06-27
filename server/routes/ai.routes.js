@@ -3,6 +3,7 @@ import authMiddleware from '../middleware/auth.middleware.js';
 import User from '../models/User.js';
 import Workout from '../models/Workout.js';
 import Meal from '../models/Meal.js';
+import Cycle from '../models/Cycle.js';
 import { generateWeeklyPlan, chatWithNutritionist } from '../services/gemini.service.js';
 
 const router = express.Router();
@@ -38,15 +39,22 @@ router.post('/weekly-plan', async (req, res) => {
       Meal.find(query).sort({ date: -1 })
     ]);
 
+    let last7DaysCycle = [];
+    if (user.gender === 'female') {
+      last7DaysCycle = await Cycle.find(query).sort({ date: -1 });
+    }
+
     // 4. Build the massive userData object that Gemini needs to read
     const userData = {
       name: user.name,
       goal: user.goal,
+      gender: user.gender,
       dailyCalorieTarget: user.dailyCalorieTarget,
       last7DaysWorkouts,
       // We only pass the 15 most recent meals. If they logged 50 meals, the prompt would be 
       // too huge and Gemini might get confused or hit a token limit.
-      last7DaysMeals: last7DaysMeals.slice(0, 15) 
+      last7DaysMeals: last7DaysMeals.slice(0, 15),
+      last7DaysCycle
     };
 
     // 5. Hand the data to our Gemini Service and wait for it to generate the JSON plan

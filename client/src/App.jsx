@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Log from './pages/Log';
+import History from './pages/History';
+import Cycle from './pages/Cycle';
 import Plan from './pages/Plan';
 import Chat from './pages/Chat';
 import Navbar from './components/Navbar';
@@ -47,6 +49,8 @@ export default function App() {
           {/* Notice how the real page is passed in as the 'children' of the ProtectedRoute! */}
           <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/log" element={<ProtectedRoute><Log /></ProtectedRoute>} />
+          <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          <Route path="/cycle" element={<ProtectedRoute><Cycle /></ProtectedRoute>} />
           <Route path="/plan" element={<ProtectedRoute><Plan /></ProtectedRoute>} />
           <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 

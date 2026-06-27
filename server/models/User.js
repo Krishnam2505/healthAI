@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema({
     enum: ['lose', 'maintain', 'gain'],
     default: 'maintain'
   },
+  // The user's gender (for cycle tracking and biological metrics)
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other'],
+    default: 'other'
+  },
   // The target weight in kg the user wants to reach
   targetWeight: {
     type: Number
