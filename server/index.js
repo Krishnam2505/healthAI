@@ -20,7 +20,7 @@ const app = express();
 // 4. Add middleware
 // We accept requests from the deployed client (CLIENT_URL) or localhost for development
 app.use(cors({ 
-  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL] : ['http://localhost:5173'], 
+  origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL] : ['http://localhost:5173', 'http://localhost:5174'], 
   credentials: true 
 }));
 app.use(express.json());
