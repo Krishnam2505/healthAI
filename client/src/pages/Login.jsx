@@ -74,8 +74,8 @@ export default function Login() {
   return (
     <>
       <div className="login-page">
-        {/* We reuse the global .card class we built in Chunk 7.1! */}
-        <div className="card login-card">
+        {/* We reuse the global .card class, and add our cinematic fade animation */}
+        <div className="card login-card fade-in-up">
 
           <div className="login-header">
             <h1 className="login-logo">⚡ FitAI</h1>
@@ -164,6 +164,8 @@ export default function Login() {
 
         .login-subtitle {
           color: var(--text-secondary);
+          font-weight: 400;
+          letter-spacing: -0.01em;
         }
 
         .input-group {

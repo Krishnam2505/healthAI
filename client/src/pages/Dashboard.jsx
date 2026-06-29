@@ -102,7 +102,7 @@ export default function Dashboard() {
       <div className="dashboard-container">
         
         {/* ROW 1: Greeting */}
-        <header className="dashboard-header">
+        <header className="dashboard-header fade-in">
           <h1>{greeting}, {profile?.name?.split(' ')[0]} 👋</h1>
           <p>{dateString}</p>
         </header>
@@ -111,31 +111,31 @@ export default function Dashboard() {
         <div className="dashboard-grid">
           
           {/* ROW 2: Four quick stat cards */}
-          <div className="card stat-card">
+          <div className="card stat-card fade-in-up delay-100">
             <h3>🍽️ Calories</h3>
             <div className="stat-value">{today.totalCalories} <span className="stat-unit">kcal</span></div>
           </div>
-          <div className="card stat-card">
+          <div className="card stat-card fade-in-up delay-200">
             <h3>🔥 Burned</h3>
             <div className="stat-value">{today.caloriesBurned} <span className="stat-unit">kcal</span></div>
           </div>
-          <div className="card stat-card">
+          <div className="card stat-card fade-in-up delay-300">
             <h3>💧 Water</h3>
             <div className="stat-value">{today.waterLiters} <span className="stat-unit">L</span></div>
           </div>
-          <div className="card stat-card">
+          <div className="card stat-card fade-in-up delay-400">
             <h3>😴 Sleep</h3>
             {/* If they haven't logged sleep yet, show a dash instead of 0 */}
             <div className="stat-value">{today.sleepHours || '—'} <span className="stat-unit">hrs</span></div>
           </div>
 
           {/* ROW 3: Ring (40%) and Weekly Chart (60%) */}
-          <div className="card span-5 flex-col">
+          <div className="card span-5 flex-col fade-in-up delay-200">
             <h2 className="card-title">Daily Goal</h2>
             <CalorieRing consumed={today.totalCalories} target={profile.dailyCalorieTarget} />
           </div>
           
-          <div className="card span-7 flex-col">
+          <div className="card span-7 flex-col fade-in-up delay-300">
             <h2 className="card-title">This Week</h2>
             <WeeklyChart 
               labels={weekly.labels} 
@@ -145,13 +145,13 @@ export default function Dashboard() {
           </div>
 
           {/* ROW 4: Macros (50%) and Streak (50%) */}
-          <div className="card span-6 flex-col">
+          <div className="card span-6 flex-col fade-in-up delay-400">
             <h2 className="card-title">Macros</h2>
             <MacroBreakdown protein={today.totalProtein} carbs={today.totalCarbs} fat={today.totalFat} />
           </div>
 
           {/* We don't wrap the streak in a .card because StreakBadge already acts as its own card! */}
-          <div className="span-6 flex-col stretch-child">
+          <div className="span-6 flex-col stretch-child fade-in-up delay-500">
             <StreakBadge current={streak.current} longest={streak.longest} />
           </div>
 
