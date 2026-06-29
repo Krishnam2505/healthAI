@@ -15,11 +15,15 @@ router.use(authMiddleware);
 router.get('/', async (req, res) => {
   try {
     // 1. Calculate today's exact start and end millisecond
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
+    // Use the client's provided date if available, otherwise fallback to server's date
+    const targetDate = req.query.date ? new Date(req.query.date) : new Date();
     
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
+    // We want the UTC boundaries of the target date because we save all items at Midnight UTC of their respective local day string.
+    const startOfToday = new Date(targetDate);
+    startOfToday.setUTCHours(0, 0, 0, 0);
+    
+    const endOfToday = new Date(targetDate);
+    endOfToday.setUTCHours(23, 59, 59, 999);
 
     const query = {
       userId: req.userId,
@@ -50,10 +54,10 @@ router.get('/', async (req, res) => {
     const sleepHours = sleep.reduce((sum, entry) => sum + entry.hours, 0);
 
     // --- 4. WEEKLY STATS (Last 7 Days) ---
-    // Calculate 7 days ago
-    const startOf7DaysAgo = new Date();
+    // Calculate 6 days before the target date
+    const startOf7DaysAgo = new Date(targetDate);
     startOf7DaysAgo.setDate(startOfToday.getDate() - 6);
-    startOf7DaysAgo.setHours(0, 0, 0, 0);
+    startOf7DaysAgo.setUTCHours(0, 0, 0, 0);
 
     // Fetch all meals and workouts from the last 7 days in just 2 queries!
     const weeklyQuery = {
@@ -71,34 +75,34 @@ router.get('/', async (req, res) => {
 
     // Loop backwards from 6 days ago to today (0)
     for (let i = 6; i >= 0; i--) {
-      const targetDate = new Date();
-      targetDate.setDate(startOfToday.getDate() - i);
+      const iterDate = new Date(targetDate);
+      iterDate.setDate(targetDate.getDate() - i);
       
-      weekly.labels.push(dayNames[targetDate.getDay()]); // E.g., 'Mon'
+      weekly.labels.push(dayNames[iterDate.getDay()]); // E.g., 'Mon'
 
       // Filter the data we already downloaded in JS (much faster than asking the DB 7 times)
       const mealsThatDay = weeklyMeals.filter(meal => 
-        new Date(meal.date).getDate() === targetDate.getDate() && 
-        new Date(meal.date).getMonth() === targetDate.getMonth()
+        new Date(meal.date).getDate() === iterDate.getDate() && 
+        new Date(meal.date).getMonth() === iterDate.getMonth()
       );
       weekly.calories.push(mealsThatDay.reduce((sum, m) => sum + m.calories, 0));
 
       const workoutsThatDay = weeklyWorkouts.filter(workout => 
-        new Date(workout.date).getDate() === targetDate.getDate() && 
-        new Date(workout.date).getMonth() === targetDate.getMonth()
+        new Date(workout.date).getDate() === iterDate.getDate() && 
+        new Date(workout.date).getMonth() === iterDate.getMonth()
       );
       weekly.workoutMinutes.push(workoutsThatDay.reduce((sum, w) => sum + w.duration, 0));
     }
 
     // --- 5. STREAK CALCULATION ---
     let streakCount = 0;
-    let checkDate = new Date(); // Start checking from today
+    let checkDate = new Date(targetDate); // Start checking from today
 
     while (true) {
       const checkStart = new Date(checkDate);
-      checkStart.setHours(0, 0, 0, 0);
+      checkStart.setUTCHours(0, 0, 0, 0);
       const checkEnd = new Date(checkDate);
-      checkEnd.setHours(23, 59, 59, 999);
+      checkEnd.setUTCHours(23, 59, 59, 999);
 
       // .exists() is a super fast Mongoose shortcut that just returns true or false
       const hasWorkout = await Workout.exists({

@@ -20,8 +20,13 @@ export default function Dashboard() {
     setLoading(true);
     setError(null);
     try {
-      // Hits the giant aggregation route we built in Phase 4!
-      const response = await api.get('/dashboard');
+      // Get the user's local date string (e.g. '2026-06-30')
+      const d = new Date();
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      const localDateStr = d.toISOString().split('T')[0];
+      
+      // Hits the aggregation route and passes the user's explicit local date
+      const response = await api.get(`/dashboard?date=${localDateStr}`);
       setDashboardData(response.data);
     } catch (err) {
       console.error("Dashboard fetch error:", err);
