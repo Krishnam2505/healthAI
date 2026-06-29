@@ -5,7 +5,11 @@ import Toast, { useToast } from '../components/Toast';
 export default function Log() {
   const [activeTab, setActiveTab] = useState('workout'); 
   const { toastProps, showToast } = useToast();
-  const getTodayStr = () => new Date().toISOString().split('T')[0];
+  const getTodayStr = () => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  };
 
   // ---------------------------------------------------------
   // 1. WORKOUT FORM STATE

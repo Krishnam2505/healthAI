@@ -1,159 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  /* A clean, minimalist Light Theme that feels human-made, like Notion or Apple Health */
-  --bg-primary: #fafafa;       /* very soft off-white for the main background */
-  --bg-card: #ffffff;          /* pure white for cards */
-  --bg-card-hover: #f4f4f5;    /* subtle grey on hover */
-  --border: #e4e4e7;           /* light, delicate borders */
+  /* Premium Light Theme */
+  --bg-primary: #f8fafc;       /* Very soft, cool pearl background */
+  --bg-card: rgba(255, 255, 255, 0.7); /* Translucent white for glassmorphism */
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --border: rgba(203, 213, 225, 0.5); /* Delicate, semi-transparent borders */
   
-  --text-primary: #18181b;     /* soft charcoal (not pure black) for readable text */
-  --text-secondary: #71717a;   /* warm grey for subtitles */
+  --text-primary: #0f172a;     /* Deep navy/slate for highly readable, premium text */
+  --text-secondary: #64748b;   /* Cool, sophisticated gray */
   
-  --accent-green: #10b981;     /* a softer, organic emerald green */
-  --accent-blue: #3b82f6;      /* calm blue */
-  --accent-orange: #f97316;    /* warm orange */
+  /* Rich Gradients & Accents */
+  --accent-green: #0ea5e9;     /* Swapping standard green for an electric oceanic blue-green */
+  --accent-gradient: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%); /* Ocean to Emerald */
+  --accent-gradient-hover: linear-gradient(135deg, #0284c7 0%, #059669 100%);
+  
+  --accent-blue: #3b82f6;      
+  --accent-orange: #f97316;    
   --accent-red: #ef4444;       
   --accent-amber: #f59e0b;     
   
-  --radius: 16px;              /* softer, rounder corners feel more organic */
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); /* very soft, elegant shadow instead of harsh dark ones */
+  --radius: 20px;              /* Much softer, friendly Apple-esque curves */
+  --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05); /* Deep, ultra-soft diffusion shadow */
+  --shadow-hover: 0 25px 50px -12px rgba(0, 0, 0, 0.1); 
+  
+  --glass-blur: blur(16px);
 }
 
-/* Dark Theme Overrides */
+/* Premium Dark Theme Overrides */
 html.dark, .dark {
-  --bg-primary: #121212;       /* deep dark background */
-  --bg-card: #1e1e1e;          /* slightly lighter for cards */
-  --bg-card-hover: #27272a;    /* subtle hover state */
-  --border: #27272a;           /* dark borders */
+  --bg-primary: #020617;       /* Midnight space-black */
+  --bg-card: rgba(15, 23, 42, 0.6); /* Frosted deep navy */
+  --bg-card-hover: rgba(30, 41, 59, 0.8);
+  --border: rgba(51, 65, 85, 0.5);
   
-  --text-primary: #f4f4f5;     /* soft off-white text */
-  --text-secondary: #a1a1aa;   /* muted gray for secondary text */
+  --text-primary: #f8fafc;     
+  --text-secondary: #94a3b8;   
   
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4); /* stronger shadow for dark mode */
+  --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* Base Reset: Strips away browser default margins and padding */
+/* Base Reset */
 * { 
   box-sizing: border-box; 
   margin: 0; 
   padding: 0; 
 }
 
-/* Apply our new CSS Variables to the entire app body */
 body { 
   background-color: var(--bg-primary); 
   color: var(--text-primary); 
-  font-family: 'Inter', system-ui, sans-serif; 
+  font-family: 'Outfit', system-ui, sans-serif; /* Premium modern typography */
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* --- Global Utility Classes --- */
 
-/* A beautiful, elevated card container */
+/* Glassmorphism Card Container */
 .card { 
   background: var(--bg-card); 
   border-radius: var(--radius); 
   border: 1px solid var(--border); 
-  padding: 1.5rem; 
+  padding: 1.75rem; 
   box-shadow: var(--shadow); 
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* A bright, eye-catching primary button */
-.btn-primary { 
-  background: var(--accent-green); 
-  color: #000; 
-  border: none; 
-  border-radius: 8px; 
-  padding: 0.6rem 1.2rem; 
-  font-weight: 600; 
-  cursor: pointer; 
-  transition: opacity 0.2s ease;
-}
-
-.btn-primary:hover { 
-  opacity: 0.9; 
-}
-
-/* A subtle, outlined secondary button */
-.btn-secondary { 
-  background: transparent; 
-  color: var(--text-primary); 
-  border: 1px solid var(--border); 
-  border-radius: 8px; 
-  padding: 0.6rem 1.2rem; 
-  cursor: pointer; 
-  transition: background 0.2s ease;
-}
-
-.btn-secondary:hover {
+/* Micro-animation: Card Hover Lift */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
   background: var(--bg-card-hover);
 }
 
-/* A bright, eye-catching danger button */
-.btn-danger { 
-  background: var(--accent-red); 
+/* Beautiful Gradient Primary Button */
+.btn-primary { 
+  background: var(--accent-gradient); 
   color: white; 
   border: none; 
-  border-radius: 8px; 
-  padding: 0.6rem 1.2rem; 
+  border-radius: 12px; 
+  padding: 0.75rem 1.5rem; 
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600; 
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer; 
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
+}
+
+/* Button Micro-interactions */
+.btn-primary:hover { 
+  background: var(--accent-gradient-hover);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.23);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: scale(0.97); /* Tactile click feedback */
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2);
+}
+
+/* Subtle Secondary Button */
+.btn-secondary { 
+  background: transparent; 
+  color: var(--text-primary); 
+  border: 1.5px solid var(--border); 
+  border-radius: 12px; 
+  padding: 0.75rem 1.5rem; 
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer; 
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-card);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* Danger Button */
+.btn-danger { 
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white; 
+  border: none; 
+  border-radius: 12px; 
+  padding: 0.75rem 1.5rem; 
+  font-family: 'Outfit', sans-serif;
   font-weight: 600; 
   cursor: pointer; 
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
 }
-.btn-danger:hover { opacity: 0.9; }
+
+.btn-danger:hover { 
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.23);
+}
+
+.btn-danger:active {
+  transform: scale(0.97);
+}
+
+/* Inputs and Selects (Forms) */
+input, select {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #0ea5e9 !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
+}
 
 /* --- History Page Styles --- */
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .history-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 1.25rem;
+  border-radius: 16px;
   border: 1px solid var(--border);
-  background: var(--bg-primary);
-  transition: transform 0.2s ease;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .history-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-hover);
+  background: var(--bg-card-hover);
+  border-color: rgba(14, 165, 233, 0.3);
 }
 
 .history-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .history-date {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .history-title {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
   color: var(--text-primary);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .history-details {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .history-notes {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-style: italic;
   color: var(--text-secondary);
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .history-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 /* --- Modal Styles --- */
@@ -164,21 +241,58 @@ body {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
+  animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   width: 90%;
   max-width: 500px;
   background: var(--bg-card);
-  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Navbar glass effect */
+nav, .navbar {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.6); /* Very translucent */
+  border-bottom: 1px solid var(--border);
+}
+
+html.dark nav, html.dark .navbar {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
