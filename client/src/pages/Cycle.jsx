@@ -12,6 +12,7 @@ export default function Cycle() {
   const [cramps, setCramps] = useState('None');
   const [mood, setMood] = useState('None');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [todaysLogId, setTodaysLogId] = useState(null);
 
   useEffect(() => {
     fetchCycleData();
@@ -34,6 +35,9 @@ export default function Cycle() {
         setFlowIntensity(todaysLog.flowIntensity || 'None');
         setCramps(todaysLog.cramps || 'None');
         setMood(todaysLog.mood || 'None');
+        setTodaysLogId(todaysLog._id);
+      } else {
+        setTodaysLogId(null);
       }
     } catch (err) {
       console.error(err);
@@ -48,12 +52,17 @@ export default function Cycle() {
   const handleLogSymptom = async () => {
     setIsSubmitting(true);
     try {
-      await api.post('/cycle', {
-        flowIntensity,
-        cramps,
-        mood
-      });
-      showToast('Symptoms logged successfully!', 'success');
+      const payload = { flowIntensity, cramps, mood };
+      
+      if (todaysLogId) {
+        // Update the existing log for today to prevent duplicates
+        await api.put(`/cycle/${todaysLogId}`, payload);
+      } else {
+        // Create a brand new log
+        await api.post('/cycle', payload);
+      }
+      
+      showToast('Symptoms saved successfully!', 'success');
       fetchCycleData(); // Refresh
     } catch (err) {
       showToast('Failed to log symptoms', 'error');
