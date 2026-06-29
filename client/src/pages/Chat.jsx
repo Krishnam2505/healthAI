@@ -54,8 +54,10 @@ export default function Chat() {
 
     try {
       // Gemini expects 'model' and 'user', not 'assistant' and 'user'
-      // We map over our UI array and convert it to the strict Gemini JSON format
-      const geminiMessages = newMessages.map(m => ({
+      // We map over our UI array and convert it to the strict Gemini JSON format.
+      // IMPORTANT: We slice(1) to remove the hardcoded first greeting! 
+      // Gemini throws an error if the history array starts with a 'model' role.
+      const geminiMessages = newMessages.slice(1).map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }]
       }));
