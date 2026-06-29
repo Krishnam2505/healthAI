@@ -14,7 +14,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // - 'gemini-1.5-pro' is Google's most capable model, designed for complex reasoning, math, and massive coding tasks. But it is slightly slower.
 // - 'gemini-1.5-flash' is a lightweight, blazing-fast model optimized for speed and high-volume tasks (like generating quick text summaries or plans).
 // Since we want our Health Tracker to generate a weekly plan almost instantly without making the user wait, 'flash' is the perfect choice!
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 // This function takes all the user's data and asks Gemini to build a custom 7-day plan
 async function generateWeeklyPlan(userData) {
