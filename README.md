@@ -2,7 +2,6 @@
 
 > A modern, full-stack health tracking application that leverages artificial intelligence to provide personalized fitness plans, real-time nutritional advice, and comprehensive cycle tracking.
 
-![FitAI Dashboard Placeholder](https://via.placeholder.com/1000x500?text=FitAI+Dashboard)
 
 ## 🌟 Overview
 
@@ -122,5 +121,3 @@ npm run dev
 | `POST` | `/api/ai/chat` | Send a message to the AI nutritionist | Yes |
 
 ---
-
-*Designed and developed as a portfolio project demonstrating full-stack proficiency, modern UI/UX principles, and AI integration.*

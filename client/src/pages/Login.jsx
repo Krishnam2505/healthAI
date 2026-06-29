@@ -48,7 +48,7 @@ export default function Login() {
   const handleGuestLogin = () => {
     setEmail('guest@fitai.com');
     setPassword('guest123');
-    
+
     // We write a quick inline login specifically for the guest
     setLoading(true);
     setError('');
@@ -117,8 +117,8 @@ export default function Login() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
 
-          <button 
-            className="btn-secondary login-btn guest-btn" 
+          <button
+            className="btn-secondary login-btn guest-btn"
             onClick={handleGuestLogin}
             disabled={loading}
           >
