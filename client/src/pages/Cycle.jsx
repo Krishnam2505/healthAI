@@ -23,8 +23,13 @@ export default function Cycle() {
       setCycleData(response.data);
       
       // If they already logged today, pre-fill the buttons
-      const today = new Date().toISOString().split('T')[0];
-      const todaysLog = response.data.find(log => log.date.startsWith(today));
+      const today = new Date();
+      const todaysLog = response.data.find(log => {
+        const logDate = new Date(log.date);
+        return logDate.getDate() === today.getDate() && 
+               logDate.getMonth() === today.getMonth() && 
+               logDate.getFullYear() === today.getFullYear();
+      });
       if (todaysLog) {
         setFlowIntensity(todaysLog.flowIntensity || 'None');
         setCramps(todaysLog.cramps || 'None');
@@ -110,8 +115,13 @@ export default function Cycle() {
     d.setHours(0,0,0,0);
     const time = d.getTime();
     
-    const isoDate = d.toISOString().split('T')[0];
-    const log = cycleData.find(l => l.date.startsWith(isoDate));
+    const log = cycleData.find(l => {
+      const logDate = new Date(l.date);
+      return logDate.getDate() === day && 
+             logDate.getMonth() === currentMonth && 
+             logDate.getFullYear() === currentYear;
+    });
+    
     if (log && log.flowIntensity && log.flowIntensity !== 'None') {
       return 'logged-flow';
     }
@@ -319,6 +329,8 @@ export default function Cycle() {
           {isSubmitting ? 'Saving...' : 'Save Symptoms'}
         </button>
       </div>
+
+      <Toast {...toastProps} />
 
       <style>{`
         .cycle-page-container {
