@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import { useTheme } from '../context/ThemeContext';
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   // State to track if the mobile hamburger menu is open or closed
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -52,6 +53,13 @@ export default function Navbar() {
 
         {/* Right Side: Profile & Logout (Hidden on Mobile) */}
         <div className="navbar-right desktop-only">
+          <button 
+            onClick={toggleTheme} 
+            className="theme-toggle-btn" 
+            aria-label="Toggle Theme"
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
           <span className="user-greeting">Hi, {user?.name?.split(' ')[0] || 'User'}</span>
           <button onClick={handleLogout} className="btn-secondary btn-sm">Logout</button>
         </div>
@@ -89,6 +97,13 @@ export default function Navbar() {
         </NavLink>
         
         <div className="mobile-menu-footer">
+          <button 
+            onClick={toggleTheme} 
+            className="theme-toggle-btn" 
+            aria-label="Toggle Theme"
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
           <span className="user-greeting">Hi, {user?.name?.split(' ')[0] || 'User'}</span>
           <button onClick={handleLogout} className="btn-secondary btn-sm">Logout</button>
         </div>
@@ -162,6 +177,24 @@ export default function Navbar() {
         .btn-sm {
           padding: 0.4rem 0.8rem;
           font-size: 0.9rem;
+        }
+
+        .theme-toggle-btn {
+          background: transparent;
+          border: none;
+          font-size: 1.25rem;
+          cursor: pointer;
+          color: var(--text-primary);
+          padding: 0.5rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+          background: var(--bg-card-hover);
         }
 
         /* --- MOBILE STYLES (Hidden by default on Desktop) --- */

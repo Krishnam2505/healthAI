@@ -18,6 +18,19 @@
   --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); /* very soft, elegant shadow instead of harsh dark ones */
 }
 
+/* Dark Theme Overrides */
+html.dark, .dark {
+  --bg-primary: #121212;       /* deep dark background */
+  --bg-card: #1e1e1e;          /* slightly lighter for cards */
+  --bg-card-hover: #27272a;    /* subtle hover state */
+  --border: #27272a;           /* dark borders */
+  
+  --text-primary: #f4f4f5;     /* soft off-white text */
+  --text-secondary: #a1a1aa;   /* muted gray for secondary text */
+  
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4); /* stronger shadow for dark mode */
+}
+
 /* Base Reset: Strips away browser default margins and padding */
 * { 
   box-sizing: border-box; 
