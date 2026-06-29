@@ -122,8 +122,11 @@ export default function Cycle() {
              logDate.getFullYear() === currentYear;
     });
     
-    if (log && log.flowIntensity && log.flowIntensity !== 'None') {
-      return 'logged-flow';
+    if (log) {
+      if (log.flowIntensity && log.flowIntensity !== 'None') {
+        return 'logged-flow';
+      }
+      return 'logged-none';
     }
     
     if (pStart) {
@@ -256,6 +259,7 @@ export default function Cycle() {
             
             <div className="calendar-legend">
               <div className="legend-item"><div className="legend-box logged-flow"></div> Logged Flow</div>
+              <div className="legend-item"><div className="legend-box logged-none"></div> Logged Symptoms</div>
               <div className="legend-item"><div className="legend-box predicted-flow"></div> Current Cycle</div>
               <div className="legend-item"><div className="legend-box next-predicted-flow"></div> Predicted Next</div>
             </div>
@@ -614,6 +618,12 @@ export default function Cycle() {
           color: white;
           border-color: #cc0000;
           box-shadow: 0 2px 6px rgba(204,0,0,0.2);
+        }
+
+        .calendar-cell.logged-none {
+          background: #e2e8f0;
+          border-color: #cbd5e1;
+          color: #334155;
         }
 
         .calendar-cell.predicted-flow {
