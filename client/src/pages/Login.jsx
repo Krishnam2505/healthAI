@@ -28,11 +28,11 @@ export default function Login() {
       // POST the data to our Node.js backend. 
       // Because we set the baseURL in axios.js, this automatically goes to http://localhost:5001/api/auth/login
       const response = await api.post('/auth/login', { email, password });
-      
+
       // If the backend says "Success!", it will hand us the user profile and the secret JWT token.
       // We instantly hand those two things to our Context (which saves them to localStorage)
       login(response.data.user, response.data.token);
-      
+
       // Navigate them to the Protected Dashboard!
       navigate('/');
     } catch (err) {
@@ -42,6 +42,25 @@ export default function Login() {
       // Whether it succeeded or failed, stop the loading state
       setLoading(false);
     }
+  };
+
+  // Auto-login for recruiters!
+  const handleGuestLogin = () => {
+    setEmail('guest@fitai.com');
+    setPassword('guest123');
+    
+    // We write a quick inline login specifically for the guest
+    setLoading(true);
+    setError('');
+    api.post('/auth/login', { email: 'guest@fitai.com', password: 'guest123' })
+      .then(response => {
+        login(response.data.user, response.data.token);
+        navigate('/');
+      })
+      .catch(err => {
+        setError('Guest account not found! Please register guest@fitai.com first.');
+        setLoading(false);
+      });
   };
 
   // 3. User Experience Feature
@@ -57,7 +76,7 @@ export default function Login() {
       <div className="login-page">
         {/* We reuse the global .card class we built in Chunk 7.1! */}
         <div className="card login-card">
-          
+
           <div className="login-header">
             <h1 className="login-logo">⚡ FitAI</h1>
             <p className="login-subtitle">Welcome back</p>
@@ -66,8 +85,8 @@ export default function Login() {
           {/* Email Input */}
           <div className="input-group">
             <label>Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -78,8 +97,8 @@ export default function Login() {
           {/* Password Input */}
           <div className="input-group">
             <label>Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -90,12 +109,20 @@ export default function Login() {
           {/* Only draw the error box if the 'error' state actually contains text */}
           {error && <div className="error-message">{error}</div>}
 
-          <button 
-            className="btn-primary login-btn" 
+          <button
+            className="btn-primary login-btn"
             onClick={handleLogin}
             disabled={loading}
           >
             {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+
+          <button 
+            className="btn-secondary login-btn guest-btn" 
+            onClick={handleGuestLogin}
+            disabled={loading}
+          >
+            🕵️‍♂️ Try as Guest
           </button>
 
           <div className="login-footer">
@@ -191,6 +218,18 @@ export default function Login() {
         .login-btn:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        .guest-btn {
+          background: transparent;
+          border: 1px solid var(--border);
+          color: var(--text-primary);
+          margin-top: -0.5rem;
+        }
+
+        .guest-btn:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: var(--text-secondary);
         }
 
         .login-footer {
